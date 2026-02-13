@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Wolf Moon Alert</title>
+
+<style>
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+#alert {
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  display: none;
+}
+
+.moon {
+  position: absolute;
+  right: 600px;
+  top: 200px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, #ff2a2a 55%, transparent 70%);
+  box-shadow: 0 0 80px red;
+  animation: pulse 2s infinite alternate;
+}
+
+#wolf {
+  position: absolute;
+  left: 550px;
+  bottom: 250px;
+  width: 350px;
+  animation: howl 1s infinite alternate;
+}
+
+#text {
+  position: absolute;
+  bottom: 200px;
+  width: 100%;
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  color: #ff2a2a;
+  text-shadow: 0 0 20px red;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 0 40px red; }
+  to { box-shadow: 0 0 100px red; }
+}
+
+@keyframes howl {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(4deg); }
+}
+</style>
+</head>
+
+<body>
+<div id="alert">
+  <div class="moon"></div>
+  <img id="wolf" src="wolf.png">
+  <div id="text"></div>
+</div>
+
+<audio id="sound" src="howl.mp3"></audio>
+
+<script>
+window.addEventListener('onEventReceived', function (obj) {
+  const name = obj.detail.event.name;
+  document.getElementById("text").innerText =
+    name + " has joined the pack!";
+
+  const alert = document.getElementById("alert");
+  const sound = document.getElementById("sound");
+
+  alert.style.display = "block";
+  sound.currentTime = 0;
+  sound.play();
+
+  setTimeout(() => {
+    alert.style.display = "none";
+  }, 6000);
+});
+</script>
+</body>
+</html>

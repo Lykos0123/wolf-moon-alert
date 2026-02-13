@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>Wolf Moon Alert</title>
 
+<script src="https://cdn.streamlabs.com/widgets/event-listener.js"></script>
+
 <style>
 body {
   margin: 0;
@@ -62,6 +64,7 @@ body {
 </head>
 
 <body>
+
 <div id="alert">
   <div class="moon"></div>
   <img id="wolf" src="wolf.png">
@@ -71,22 +74,24 @@ body {
 <audio id="sound" src="howl.mp3"></audio>
 
 <script>
-window.addEventListener('onEventReceived', function (obj) {
-  const name = obj.detail.event.name;
-  document.getElementById("text").innerText =
-    name + " has joined the pack!";
+const alertBox = document.getElementById("alert");
+const text = document.getElementById("text");
+const sound = document.getElementById("sound");
 
-  const alert = document.getElementById("alert");
-  const sound = document.getElementById("sound");
+Streamlabs.on("event", (event) => {
+  if (!event.detail || !event.detail.name) return;
 
-  alert.style.display = "block";
+  text.innerText = event.detail.name + " has joined the pack!";
+  alertBox.style.display = "block";
+
   sound.currentTime = 0;
   sound.play();
 
   setTimeout(() => {
-    alert.style.display = "none";
+    alertBox.style.display = "none";
   }, 6000);
 });
 </script>
+
 </body>
 </html>
